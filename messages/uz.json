@@ -1,0 +1,500 @@
+{
+  "common": {
+    "brand": "ILM UMMONI",
+    "language": "Til",
+    "signIn": "Kirish",
+    "signOut": "Chiqish",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "search": "Qidirish",
+    "loading": "Yuklanmoqda...",
+    "actions": "Amallar",
+    "status": "Holat",
+    "date": "Sana",
+    "course": "Kurs",
+    "student": "O'quvchi",
+    "teacher": "O'qituvchi",
+    "amount": "Summa",
+    "name": "F.I.O.",
+    "email": "Email (ixtiyoriy)",
+    "phoneLogin": "Telefon (kirish)",
+    "password": "Parol",
+    "subject": "Fan",
+    "bio": "Biografiya",
+    "description": "Tavsif",
+    "price": "Narxi",
+    "duration": "Davomiyligi (daqiqa)",
+    "startDate": "Boshlanish sanasi",
+    "edit": "Tahrirlash",
+    "delete": "Oʻchirish",
+    "add": "Qoʻshish",
+    "saveChanges": "Oʻzgarishlarni saqlash",
+    "noPayments": "Hali to'lovlar qayd etilmagan.",
+    "studentActive": "Faol",
+    "studentInactive": "Nofaol",
+    "studentCompleted": "Tugagan",
+    "studentSuspended": "To'xtatilgan",
+    "workspace": "Ish joyi"
+  },
+  "nav": {
+    "home": "Bosh sahifa",
+    "courses": "Kurslar",
+    "teachers": "O'qituvchilar",
+    "contact": "Bog'lanish"
+  },
+  "landing": {
+    "badge": "Zamonaviy ta'lim markazi",
+    "headline": "Bilim — kelajakingiz kaliti",
+    "subtext": "Ilm Ummoni markazida o'rganish — og'ir vazifa emas. Kurslar, tajribali o'qituvchilar va qulay muhit sizning kelajak yo'lingizni oldinga yo'naltiradi.",
+    "coursesCta": "Kurslarni ko'rish",
+    "registerCta": "Ro'yxatdan o'tish",
+    "practical": "Amaliy ta'lim",
+    "schedule": "Qulay jadval",
+    "certificate": "Natija va sertifikat",
+    "stats": {
+      "students": {
+        "value": "1500+",
+        "label": "O'quvchilar",
+        "detail": "Faol o'rganuvchilar"
+      },
+      "teachers": {
+        "value": "50+",
+        "label": "O'qituvchilar",
+        "detail": "Professional jamoa"
+      },
+      "courses": {
+        "value": "20+",
+        "label": "Kurslar",
+        "detail": "Zamonaviy yo'nalishlar"
+      },
+      "experience": {
+        "value": "5",
+        "label": "Yillik tajriba",
+        "detail": "Ta'lim bo'yicha"
+      }
+    },
+    "coursesSection": {
+      "eyebrow": "Kurslar",
+      "title": "Maqsadingizga mos yo'nalishni tanlang",
+      "description": "Har bir kurs amaliy ko'nikmalar, mentorlik va kelajakdagi imkoniyatlaringizni kengaytirish uchun yaratilgan.",
+      "price": "Narxi",
+      "duration": "soat",
+      "register": "Ro'yxatdan o'tish",
+      "empty": "Yangi kurslar tayyorlanmoqda."
+    },
+    "teachersSection": {
+      "eyebrow": "O'qituvchilar",
+      "title": "O'rganishni yanada qiziqarli qiluvchi jamoa",
+      "description": "Bizning o'qituvchilarimiz bilimni sodda, tushunarli va amaliy shaklda yetkazadi.",
+      "empty": "O'qituvchilar jamoasi kengaymoqda."
+    },
+    "why": {
+      "eyebrow": "Nima uchun bizni tanlashadi",
+      "title": "Sizning o'sishingiz uchun yaratilgan muhit",
+      "professional": "Professional o'qituvchilar",
+      "professionalDescription": "Har bir o'quvchi tajribali mutaxassislar bilan ishlaydi va kerakli qo'llab-quvvatlanadi.",
+      "modern": "Zamonaviy dastur",
+      "modernDescription": "Kurslar real loyihalar, amaliy topshiriqlar va bozor talablariga moslashtirilgan.",
+      "schedule": "Qulay jadval",
+      "scheduleDescription": "Ish va shaxsiy hayotga moslashuvchan dars jadvali orqali o'rganishni davom ettiring.",
+      "certificate": "Sertifikat",
+      "certificateDescription": "Kursni yakunlagan o'quvchilar Ilm Ummoni tayinlagan tasdiqlanadigan sertifikatga ega bo'ladi."
+    },
+    "contactSection": {
+      "eyebrow": "Ro'yxatdan o'tish",
+      "title": "Kelajakga birinchi qadamni qo'ying",
+      "description": "Qiziqayotgan kursni tanlang. Biz sizning arizangizni ko'rib chiqib, keyingi bosqich bo'yicha bog'lanamiz.",
+      "formTitle": "Kursga ariza yuborish",
+      "formDescription": "Formani to'ldiring, biz siz bilan bog'lanamiz.",
+      "name": "F.I.O.",
+      "phone": "Telefon raqami",
+      "course": "Qiziqayotgan kurs",
+      "selectCourse": "Kursni tanlang",
+      "submit": "Ariza yuborish",
+      "submitting": "Yuborilmoqda...",
+      "note": "Biz sizning arizangizni ko'rib chiqib, keyingi qadamlar bo'yicha bog'lanamiz.",
+      "success": "E'tiboringiz uchun rahmat. Ariza qabul qilindi.",
+      "errorInvalid": "Iltimos, barcha maydonlarni to'g'ri to'ldiring.",
+      "errorCourse": "Iltimos, ro'yxatdan kursni tanlang.",
+      "errorSend": "Ariza yuborilmadi. Iltimos, keyinroq urinib ko'ring."
+    },
+    "footer": {
+      "description": "Bilimga qiziqayotgan o'quvchilar uchun zamonaviy, qulay va ishonchli ta'lim markazi.",
+      "quickLinks": "Tezkor havolalar",
+      "contact": "Bog'lanish",
+      "rights": "Barcha huquqlar himoyalangan."
+    }
+  },
+  "login": {
+    "title": "Kirish",
+    "description": "Ilm Ummoni hisobingizga kiring",
+    "welcome": "Xush kelibsiz",
+    "heading": "Hisobingizga kiring",
+    "subtext": "Shaxsiy dashboardga kirish uchun ma'lumotlarni kiriting.",
+    "phone": "Telefon raqam",
+    "phonePlaceholder": "998901234567",
+    "password": "Parol",
+    "passwordPlaceholder": "Parolingizni kiriting",
+    "submit": "Dashboardga o'tish",
+    "submitting": "Kirilmoqda...",
+    "invalid": "Telefon raqami yoki parol noto'g'ri.",
+    "error": "Hozircha tizimga kirib bo'lmadi. Qayta urinib ko'ring.",
+    "help": "Yordam kerakmi?",
+    "contact": "Markaz bilan bog'lanish",
+    "features": [
+      "Rolga mos ish joyi",
+      "Xavfsiz kirish",
+      "Bitta markaz — bir tizim"
+    ]
+  },
+  "admin": {
+    "nav": {
+      "overview": "Umumiy",
+      "students": "O'quvchilar",
+      "teachers": "O'qituvchilar",
+      "courses": "Kurslar",
+      "applications": "Ariyalar",
+      "payments": "To'lovlar",
+      "schedule": "Jadval"
+    },
+    "overview": {
+      "eyebrow": "Markaz holati",
+      "welcome": "Xush kelibsiz, Admin",
+      "description": "Markazning odamlari, dasturlari va moliyaviy holati.",
+      "students": "O'quvchilar",
+      "totalStudents": "Jami o'quvchilar",
+      "activeStudents": "Faol o'quvchilar",
+      "teachers": "O'qituvchilar",
+      "teachingTeam": "O'qituvchilar jamoasi",
+      "courses": "Kurslar",
+      "catalogPrograms": "Kurslar katalogda",
+      "payments": "To'lovlar",
+      "completedPayments": "Bajarilgan to'lovlar",
+      "recentPayments": "So'nggi to'lovlar",
+      "transactionsDescription": "Oxirgi bajarilgan va kutilayotgan operatsiyalar.",
+      "shown": "ta ko'rsatilgan",
+      "database": "Ma'lumotlar ulandi"
+    },
+    "students": {
+      "title": "O'quvchilar",
+      "add": "O'quvchi qo'shish",
+      "edit": "O'quvchini tahrirlash",
+      "all": "Barcha o'quvchilar",
+      "search": "O'quvchilar orasidan qidirish",
+      "empty": "O'quvchilar topilmadi."
+    },
+    "teachers": {
+      "title": "O'qituvchilar",
+      "add": "O'qituvchi qo'shish",
+      "edit": "O'qituvchini tahrirlash",
+      "all": "O'qituvchilar jamoasi",
+      "search": "O'qituvchilar orasidan qidirish",
+      "empty": "O'qituvchilar topilmadi."
+    },
+    "courses": {
+      "title": "Kurslar",
+      "add": "Kurs qo'shish",
+      "edit": "Kursni tahrirlash",
+      "all": "Kurslar katalogi",
+      "search": "Kurslar orasidan qidirish",
+      "empty": "Kurslar topilmadi."
+    },
+    "applications": {
+      "title": "Ariyalar",
+      "pending": "Ko'rib chiqish kutilmoqda",
+      "approved": "Qabul qilingan",
+      "rejected": "Rad etilgan",
+      "queue": "Ariyalar navbati",
+      "approve": "Qabul qilish",
+      "reject": "Rad etish",
+      "empty": "Ariyalar topilmadi."
+    },
+    "payments": {
+      "title": "To'lovlar",
+      "record": "To'lovni qayd etish",
+      "history": "To'lov tarixi",
+      "total": "Jami",
+      "paid": "To'langan",
+      "pending": "Kutilmoqda",
+      "receipt": "Chek",
+      "download": "Chekni yuklab olish",
+      "empty": "To'lovlar topilmadi."
+    },
+    "schedule": {
+      "title": "Jadval",
+      "week": "Haftalik jadval",
+      "sessions": "darslar",
+      "noClasses": "Darslar rejalashtirilmagan",
+      "room": "Xona"
+    }
+  },
+  "teacher": {
+    "nav": {
+      "overview": "Umumiy",
+      "students": "O'quvchilarim",
+      "schedule": "Jadval",
+      "attendance": "Davomat",
+      "grades": "Baholar"
+    },
+    "overview": {
+      "eyebrow": "O'qituvchi holati",
+      "welcome": "Xush kelibsiz",
+      "today": "Bugungi jadval",
+      "thisWeek": "Shu hafta",
+      "upcoming": "Yaqinlashuvchi darslar",
+      "myCourses": "Mening kurslarim",
+      "empty": "Ma'lumot topilmadi",
+      "progress": "Progress"
+    },
+    "students": {
+      "title": "O'quvchilarim",
+      "description": "Faqat mening kurslarimga yozilgan o'quvchilar",
+      "search": "O'quvchilarim orasidan qidirish",
+      "attendance": "Davomat",
+      "average": "O'rtacha baho",
+      "noRecords": "Ma'lumot yo'q",
+      "empty": "O'quvchilar topilmadi.",
+      "enrollments": "yoziluv",
+      "progress": "O'quvchi natijalari"
+    },
+    "schedule": {
+      "title": "Mening jadvalim",
+      "description": "Mening kurslarim bo'yicha haftalik darslar",
+      "classes": "dars",
+      "noClasses": "Darslar rejalashtirilmagan",
+      "room": "Xona"
+    },
+    "attendance": {
+      "title": "Davomat",
+      "description": "O'z darsingizdagi davomatni qayd eting",
+      "choose": "Darsni tanlang",
+      "course": "Kurs",
+      "date": "Sana",
+      "load": "Darsni yuklash",
+      "present": "Kelgan",
+      "absent": "Kelmagan",
+      "late": "Kechikdi",
+      "save": "Davomatni saqlash",
+      "noSchedule": "Bu sanada dars rejalashtirilmagan.",
+      "empty": "O'quvchilar topilmadi.",
+      "noStudents": "Kursga o'quvchilar yozilmagan."
+    },
+    "grades": {
+      "title": "Baholar",
+      "description": "Kurslarim bo'yicha baho va izoh qo'shing",
+      "choose": "Kursni tanlang",
+      "score": "Baho",
+      "comment": "O'qituvchi izohi",
+      "optional": "Ixtiyoriy izoh",
+      "save": "Baholarni saqlash",
+      "noStudents": "O'quvchilar topilmadi.",
+      "existing": "Mavjud baholar yangilanadi, yangi yozuvlar yaratiladi.",
+      "lastScore": "Oxirgi baho",
+      "noGrade": "Baho hali kiritilmagan",
+      "empty": "Kurslarimga o'quvchilar biriktirilmagan."
+    }
+  },
+  "student": {
+    "nav": {
+      "overview": "Umumiy",
+      "schedule": "Jadvalim",
+      "grades": "Baholarim",
+      "attendance": "Davomatim",
+      "payments": "To'lovlarim"
+    },
+    "overview": {
+      "eyebrow": "O'quvchi holati",
+      "welcome": "Xush kelibsiz",
+      "description": "Faqat mening o'rganish yo'llarim.",
+      "myCourses": "Mening kurslarim",
+      "today": "Bugun",
+      "thisWeek": "Shu hafta",
+      "gradeAverage": "O'rtacha baho",
+      "paymentStatus": "To'lov holati",
+      "recentGrades": "So'nggi baholar",
+      "noGrades": "Hali baholar yo'q",
+      "paid": "To'langan",
+      "unpaid": "To'lanmagan",
+      "recordedThisMonth": "Shu oyda qayd etilgan"
+    },
+    "schedule": {
+      "title": "Mening jadvalim",
+      "description": "Faqat mening kurslarimga oid haftalik jadval",
+      "classes": "dars",
+      "noClasses": "Darslar rejalashtirilmagan",
+      "noEnrollment": "Kurslarga yozilmagansiz",
+      "room": "Xona"
+    },
+    "grades": {
+      "title": "Baholarim",
+      "description": "Kurslarim bo'yicha baholar va izohlar",
+      "average": "O'rtacha baho",
+      "teacherComment": "O'qituvchi izohi",
+      "noComment": "Izoh qo'shilmagan",
+      "empty": "Baholar topilmadi"
+    },
+    "attendance": {
+      "title": "Davomatim",
+      "description": "Kurslarim bo'yicha davomat tarixi",
+      "rate": "Davomat darajasi",
+      "history": "Davomat tarixi",
+      "attended": "Qatnashgan",
+      "missed": "Qatnashmagan",
+      "result": "Natija",
+      "empty": "Davomat yozuvlari yo'q"
+    },
+    "payments": {
+      "title": "To'lovlarim",
+      "description": "To'lov tarixi va cheklaringiz",
+      "currentMonth": "Joriy oy",
+      "paid": "To'langan",
+      "unpaid": "To'lanmagan",
+      "totalPaid": "Jami to'langan",
+      "history": "To'lov tarixi",
+      "download": "Chekni yuklab olish",
+      "empty": "To'lovlar topilmadi"
+    }
+  },
+  "days": {
+    "1": "Dushanba",
+    "2": "Seshanba",
+    "3": "Chorshanba",
+    "4": "Payshanba",
+    "5": "Juma",
+    "6": "Shanba",
+    "7": "Yakshanba"
+  },
+  "owner": {
+    "role": "Amakim",
+    "title": "Direktor paneli",
+    "nav": {
+      "overview": "Umumiy",
+      "statistics": "Statistika",
+      "courses": "Kurslar",
+      "teachers": "O'qituvchilar"
+    },
+    "readOnly": "Faqat ko'rish rejimi",
+    "overview": {
+      "eyebrow": "Markaz tahlili",
+      "welcome": "Xush kelibsiz",
+      "students": "Jami o'quvchilar",
+      "growth": "Oylik o'sish",
+      "teachers": "Jami o'qituvchilar",
+      "courses": "Jami kurslar",
+      "monthlyRevenue": "Oylik tushum",
+      "annualRevenue": "Yillik tushum",
+      "revenueChart": "Tushum dinamikasi",
+      "topCourses": "Eng mashhur kurslar",
+      "recentPayments": "So'nggi to'lovlar",
+      "studentGrowth": "O'quvchilar o'sishi",
+      "viewAll": "Batafsil statistika"
+    },
+    "statistics": {
+      "title": "Batafsil statistika",
+      "description": "Markaz faoliyatining asosiy ko'rsatkichlari",
+      "revenue": "Tushumlar",
+      "students": "O'quvchilar",
+      "enrollments": "Yoziluvlar",
+      "averageCheck": "O'rtacha to'lov",
+      "byCourse": "Kurslar bo'yicha",
+      "byMonth": "Oylar bo'yicha"
+    },
+    "courses": {
+      "title": "Kurslar",
+      "description": "Markazdagi barcha kurslar — faqat ko'rish",
+      "name": "Kurs nomi",
+      "teacher": "O'qituvchi",
+      "enrollments": "Yoziluvlar",
+      "duration": "Davomiyligi",
+      "price": "Narxi",
+      "empty": "Kurslar topilmadi"
+    },
+    "teachers": {
+      "title": "O'qituvchilar",
+      "description": "O'qituvchilar jamoasi — faqat ko'rish",
+      "name": "Ism",
+      "subject": "Fan",
+      "courses": "Kurslar",
+      "contact": "Aloqa",
+      "empty": "O'qituvchilar topilmadi"
+    }
+  },
+  "status": {
+    "PAID": "To'langan",
+    "PENDING": "Kutilmoqda",
+    "FAILED": "Muvaffaqiyatsiz",
+    "REFUNDED": "Qaytarilgan"
+  },
+  "errors": {
+    "unauthorized": "Kirish huquqi yo'q",
+    "unauthorizedDescription": "Bu sahifaga kirish uchun huquqingiz yo'q.",
+    "notFound": "Sahifa topilmadi",
+    "notFoundDescription": "Siz izlagan sahifa mavjud emas.",
+    "backHome": "Bosh sahifaga qaytish"
+  },
+  "language": {
+    "uz": "O'zbek",
+    "ru": "Русский",
+    "en": "English"
+  },
+  "gamification": {
+    "eyebrow": "Mening natijam",
+    "level": "Daraja",
+    "best": "Eng yaxshi",
+    "badges": "Yutuq belgilari",
+    "noBadges": "Hali belgi qo'nmagan. Davomatda qatnashib boring!",
+    "leaderboard": "Reyting",
+    "noRank": "Reyting uchun hali XP yo'q.",
+    "you": "siz",
+    "maxLevel": "Eng yuqori darajaga yetdingiz!",
+    "toNext": "Keyingi darajaga ({name}) {count} XP qoldi"
+  },
+  "parent": {
+    "brand": "ILM UMMONI",
+    "title": "Ota-ona paneli",
+    "eyebrow": "Farazandim",
+    "greeting": "Salom, {name}",
+    "childrenLabel": "farazand",
+    "courseLabel": "kurs",
+    "noChildren": "Hali farazand biriktirilmagan.",
+    "nav": {
+      "overview": "Umumiy",
+      "weekly": "Haftalik hisobot"
+    },
+    "today": "Bugungi davomat",
+    "attendance": "Davomat",
+    "average": "O'rtacha baho",
+    "streak": "Seriya",
+    "todayStatus": "Bugun",
+    "noRecordToday": "Hozircha yozuv yo'q",
+    "latestGrades": "So'nggi baholar",
+    "paymentStatus": "To'lov holati",
+    "notifications": "Bildirishnomalar",
+    "noNotifications": "Yangi xabarlar yo'q.",
+    "noGrades": "Baho yo'q",
+    "noPayments": "To'lov yo'q",
+    "weekDayNote": "Bugun {day} — jadval bo'yicha dars kuni.",
+    "status": {
+      "PRESENT": "Keldi",
+      "ABSENT": "Kelmadi",
+      "LATE": "Kechikdi",
+      "EXCUSED": "Sababli kelmadi",
+      "PAID": "To'langan",
+      "PENDING": "Kutilmoqda",
+      "FAILED": "Muvaffaqiyatsiz",
+      "REFUNDED": "Qaytarilgan"
+    },
+    "days": {
+      "1": "Dushanba",
+      "2": "Seshanba",
+      "3": "Chorshanba",
+      "4": "Payshanba",
+      "5": "Juma",
+      "6": "Shanba",
+      "7": "Yakshanba"
+    },
+    "weeklyTitle": "Haftalik hisobot",
+    "weeklyDescription": "{date} dan boshlab",
+    "monitoringNote": "Farazandingiz natijalari shu yerda kuzatib boriladi."
+  }
+}

@@ -1,0 +1,335 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+  TEACHER
+  STUDENT
+  OWNER
+  PARENT
+}
+
+enum StudentStatus {
+  ACTIVE
+  INACTIVE
+  COMPLETED
+  SUSPENDED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CASH
+  BANK_TRANSFER
+  CARD
+  OTHER
+}
+
+enum ApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model User {
+  id             String     @id @default(cuid())
+  name           String
+  email          String?    @unique
+  password       String
+  role           Role       @default(STUDENT)
+  phone          String     @unique
+  createdAt      DateTime   @default(now())
+  studentRecords Student[]
+  teacherProfile Teacher?
+  parentProfile  Parent?
+  auditLogs      AuditLog[]
+  pushTokens     ExpoPushToken[]
+  sentMessages     Message[] @relation("MessageSender")
+  receivedMessages Message[] @relation("MessageReceiver")
+
+  @@index([role])
+}
+
+/// One row per device that registered for Expo push notifications. The token is
+/// globally unique: if a device logs into a different account we re-point the
+/// row, so a stale device never receives another user's alerts.
+model ExpoPushToken {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  platform  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Course {
+  id           String        @id @default(cuid())
+  name         String
+  description  String?
+  price        Decimal       @db.Decimal(10, 2)
+  duration     Int
+  teacherId    String
+  teacher      Teacher       @relation("CourseTeacher", fields: [teacherId], references: [id], onDelete: Restrict)
+  students     Student[]
+  schedules    Schedule[]
+  grades       Grade[]
+  applications Application[]
+
+  @@index([teacherId])
+}
+
+model Student {
+  id         String        @id @default(cuid())
+  userId     String
+  courseId   String
+  parentId   String?
+  startDate  DateTime      @db.Date
+  status     StudentStatus @default(ACTIVE)
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course     Course        @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  parent     Parent?       @relation(fields: [parentId], references: [id], onDelete: SetNull)
+  attendance Attendance[]
+  grades     Grade[]
+  payments   Payment[]
+  xpLogs     XPLog[]
+  awards     Achievement[]
+  stats      StudentStats?
+
+  @@unique([userId, courseId])
+  @@index([courseId, status])
+  @@index([parentId])
+}
+
+/// Append-only ledger of every XP grant. `sourceKey` makes awarding idempotent:
+/// attendance and grades are upserted, so without it a teacher editing one
+/// record repeatedly would farm unlimited XP.
+model XPLog {
+  id          String   @id @default(cuid())
+  studentId   String
+  student     Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  action      String
+  points      Int
+  description String
+  sourceKey   String   @unique
+  createdAt   DateTime @default(now())
+
+  @@index([studentId, createdAt])
+  @@index([action])
+}
+
+model Achievement {
+  id        String   @id @default(cuid())
+  studentId String
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  badge     String
+  earnedAt  DateTime @default(now())
+
+  @@unique([studentId, badge])
+  @@index([badge])
+}
+
+/// One row per student-course enrollment, so XP is scoped to a single course.
+model StudentStats {
+  id            String   @id @default(cuid())
+  studentId     String   @unique
+  student       Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  totalXP       Int      @default(0)
+  level         Int      @default(1)
+  currentStreak Int      @default(0)
+  longestStreak Int      @default(0)
+  updatedAt     DateTime @updatedAt
+}
+
+model Parent {
+  id                  String               @id @default(cuid())
+  userId              String               @unique
+  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  children            Student[]
+  notifications       ParentNotification[]
+
+  @@index([userId])
+}
+
+/// Direct messages between a parent and the teachers of their child's courses.
+/// Access is enforced in application code: a parent may only message teachers
+/// who actually teach one of their children, never an arbitrary user id.
+model Message {
+  id         String   @id @default(cuid())
+  senderId   String
+  sender     User     @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId String
+  receiver   User     @relation("MessageReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  content    String
+  isRead     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@index([senderId, receiverId, createdAt])
+  @@index([receiverId, isRead])
+}
+
+/// Durable parent alerts written when a child is absent, is graded, or earns a
+/// badge. The mobile /notifications endpoint serves these so history survives.
+model ParentNotification {
+  id        String    @id @default(cuid())
+  parentId  String
+  parent    Parent    @relation(fields: [parentId], references: [id], onDelete: Cascade)
+  studentId String?
+  type      String
+  severity  String    @default("info")
+  title     String
+  body      String
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([parentId, createdAt])
+  @@index([parentId, readAt])
+  @@index([studentId, type])
+}
+
+model Teacher {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  bio       String?
+  subject   String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courses   Course[]   @relation("CourseTeacher")
+  schedules Schedule[] @relation("ScheduleTeacher")
+}
+
+model Schedule {
+  id         String       @id @default(cuid())
+  courseId   String
+  teacherId  String
+  dayOfWeek  Int          @db.SmallInt
+  startTime  DateTime     @db.Time(0)
+  endTime    DateTime     @db.Time(0)
+  room       String
+  course     Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  teacher    Teacher      @relation("ScheduleTeacher", fields: [teacherId], references: [id], onDelete: Restrict)
+  attendance Attendance[]
+
+  @@index([courseId, dayOfWeek])
+  @@index([teacherId, dayOfWeek])
+}
+
+model Attendance {
+  id         String           @id @default(cuid())
+  studentId  String
+  scheduleId String
+  date       DateTime         @db.Date
+  status     AttendanceStatus
+  student    Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  schedule   Schedule         @relation(fields: [scheduleId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, scheduleId, date])
+  @@index([scheduleId, date])
+  @@index([studentId, date])
+  @@index([date])
+}
+
+model Grade {
+  id        String   @id @default(cuid())
+  studentId String
+  courseId  String
+  score     Decimal  @db.Decimal(5, 2)
+  comment   String?
+  date      DateTime @default(now()) @db.Date
+  student   Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, date])
+  @@index([courseId, date])
+  @@index([studentId, courseId])
+}
+
+model Payment {
+  id            String        @id @default(cuid())
+  receiptNumber String        @unique @default(dbgenerated("gen_random_uuid()::text"))
+  studentId     String
+  amount        Decimal       @db.Decimal(12, 2)
+  date          DateTime      @default(now()) @db.Date
+  status        PaymentStatus
+  method        PaymentMethod
+  student       Student       @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId, date])
+  @@index([date])
+  @@index([status])
+  @@index([method, date])
+}
+
+model Application {
+  id        String            @id @default(cuid())
+  name      String
+  phone     String
+  courseId  String
+  status    ApplicationStatus @default(PENDING)
+  createdAt DateTime          @default(now())
+  course    Course            @relation(fields: [courseId], references: [id], onDelete: Restrict)
+
+  @@index([courseId, status])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model News {
+  id          String    @id @default(cuid())
+  title       String
+  content     String
+  image       String?
+  publishedAt DateTime?
+
+  @@index([publishedAt])
+}
+
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  ip        String
+  email     String?
+  success   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([ip, createdAt])
+  @@index([email, createdAt])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String?
+  oldValue  Json?
+  newValue  Json?
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
+  @@index([action, createdAt])
+  @@index([entity, entityId])
+  @@index([createdAt])
+}
