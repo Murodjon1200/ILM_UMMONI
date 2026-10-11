@@ -45,15 +45,6 @@ const nextConfig = {
       },
     ];
   },
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "/uz",
-        permanent: false,
-      },
-    ];
-  },
 };
 
 export default withNextIntl(nextConfig);
