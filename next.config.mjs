@@ -31,20 +31,12 @@ const securityHeaders = [
   { key: "Content-Security-Policy", value: contentSecurityPolicy },
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
   { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
-  { key: "X-DNS-Prefetch-Control", value: "off" },
-  ...(isDevelopment
-    ? []
-    : [
-        {
-          key: "Strict-Transport-Security",
-          value: "max-age=63072000; includeSubDomains; preload",
-        },
-      ]),
+  ...(isDevelopment ? [] : [{ key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" }]),
 ];
 
+const withNextIntl = createNextIntlPlugin("./src/i18n.ts");
+
 const nextConfig = {
-  reactStrictMode: true,
-  poweredByHeader: false,
   async headers() {
     return [
       {
@@ -53,8 +45,15 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/uz",
+        permanent: false,
+      },
+    ];
+  },
 };
-
-const withNextIntl = createNextIntlPlugin("./src/i18n.ts");
 
 export default withNextIntl(nextConfig);
