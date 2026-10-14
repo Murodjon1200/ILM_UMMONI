@@ -27,7 +27,21 @@ export function badRequest(message: string) {
   return new MobileApiError(400, message);
 }
 
-const noStoreHeaders = { "Cache-Control": "no-store" } as const;
+export function conflict(message: string) {
+  return new MobileApiError(409, message);
+}
+
+/**
+ * Mobile responses can carry bearer credentials (e.g. the session token from
+ * /api/mobile/session), so they must never be stored by any cache. `no-store`
+ * alone is enough for modern caches; `Pragma`/`Expires` also cover legacy
+ * intermediaries that predate it.
+ */
+const noStoreHeaders = {
+  "Cache-Control": "no-store, no-cache, must-revalidate, private",
+  Expires: "0",
+  Pragma: "no-cache",
+} as const;
 
 export function apiError(status: number, message: string) {
   return NextResponse.json(

@@ -24,7 +24,13 @@ const bodySchema = z.object({
  * Mobile login. React Native's fetch cannot read `set-cookie`, so instead of
  * relying on a cookie jar we return the NextAuth session token in the body.
  * The client replays it as a `Cookie` header, which `auth()` already understands,
- * so every existing role check keeps working unchanged.
+ * so every existing role check keeps working.
+ *
+ * Security: this response carries a bearer credential. `apiOk` marks every
+ * mobile response `Cache-Control: no-store` (plus `Pragma`/`Expires` for legacy
+ * caches) so the token is never stored by a proxy or shared cache, and only the
+ * `name=value` pair is returned (no cookie attributes). The client is expected
+ * to keep it in secure, on-device storage.
  */
 const handler = createRouteHandler(async (request) => {
   const body = await readJson(request);

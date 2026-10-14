@@ -60,9 +60,9 @@ function stripLocale(pathname: string) {
  * Auth.js rewrites `request.url` to `NEXTAUTH_URL`/`AUTH_URL`
  * (see next-auth/lib/env.js#reqWithEnvURL) and next-intl builds its
  * redirects/rewrites from `request.url`. When `NEXTAUTH_URL` does not match
- * the host actually serving the app (e.g. Render), that rewrite produces
- * cross-origin redirects and an infinite loop (HTTP 508). Building every
- * redirect from the inbound host keeps the middleware independent of
+ * the host actually serving the app (e.g. behind a reverse proxy), that rewrite
+ * produces cross-origin redirects and an infinite loop (HTTP 508). Building
+ * every redirect from the inbound host keeps the middleware independent of
  * `NEXTAUTH_URL`.
  */
 function getRequestOrigin(request: NextRequest) {
@@ -145,8 +145,8 @@ export const config = {
   matcher: [
     // `.*\..*` keeps the intl middleware away from real files in public/
     // (logo.png, favicon, icons). Without it every static asset is treated as a
-    // missing locale route and 404s. _vercel is excluded for the same reason.
-    "/((?!api|_next|_vercel|.*\\..*).*)",
+    // missing locale route and 404s.
+    "/((?!api|_next|.*\\..*).*)",
     "/api/:path*",
   ],
 };

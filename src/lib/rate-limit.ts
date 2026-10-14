@@ -1,22 +1,59 @@
-import { getTrustedClientIp } from "@/lib/ip";
+import { createHash } from "node:crypto";
+
+import { getClientKey } from "@/lib/ip";
 import { NextResponse } from "next/server";
 import { RateLimiterMemory } from "rate-limiter-flexible";
 
-const apiLimit = {
+interface RateLimitPolicy {
+  duration: number;
+  points: number;
+}
+
+const apiLimit: RateLimitPolicy = {
   duration: 60,
   points: 120,
 };
 
-const loginEndpointLimit = {
+const loginEndpointLimit: RateLimitPolicy = {
   duration: 15 * 60,
   points: 20,
 };
 
+/**
+ * A tighter budget for state-changing requests so a single account cannot
+ * hammer mutating endpoints (payments, reminders, attendance, grades, ...).
+ */
+const mutationLimit: RateLimitPolicy = {
+  duration: 60,
+  points: 30,
+};
+
 const apiRateLimiter = new RateLimiterMemory(apiLimit);
 const loginEndpointRateLimiter = new RateLimiterMemory(loginEndpointLimit);
+const mutationRateLimiter = new RateLimiterMemory(mutationLimit);
+
+const mutationMethods = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 
 export function getClientIp(request: Request) {
-  return getTrustedClientIp(request.headers);
+  return getClientKey(request.headers);
+}
+
+/**
+ * Rate-limit key for authenticated mutations. Derived from the session cookie
+ * so the budget follows the account/session rather than an easily-shared or
+ * spoofed source address. Falls back to the client IP when no session exists.
+ */
+function getAccountKey(request: Request) {
+  const cookie = request.headers.get("cookie");
+  const token = cookie?.match(
+    /(?:^|;\s*)[^=;]*session-token=([^;]+)/,
+  )?.[1];
+
+  if (token) {
+    return `sess:${createHash("sha256").update(token).digest("hex").slice(0, 32)}`;
+  }
+
+  return getClientIp(request);
 }
 
 function isLoginEndpoint(request: Request) {
@@ -34,13 +71,22 @@ export async function withApiRateLimit(
   const limiter = loginRequest ? loginEndpointRateLimiter : apiRateLimiter;
   const policy = loginRequest ? loginEndpointLimit : apiLimit;
   const ip = getClientIp(request);
-  let remainingPoints = 0;
+
+  const checks: Array<[RateLimiterMemory, string]> = [[limiter, ip]];
+
+  if (mutationMethods.has(request.method.toUpperCase())) {
+    checks.push([mutationRateLimiter, getAccountKey(request)]);
+  }
+
+  let remainingPoints = policy.points;
   let msBeforeNext = policy.duration * 1000;
 
   try {
-    const result = await limiter.consume(ip, 1);
-    remainingPoints = result.remainingPoints;
-    msBeforeNext = result.msBeforeNext;
+    for (const [limiterInstance, key] of checks) {
+      const result = await limiterInstance.consume(key, 1);
+      remainingPoints = Math.min(remainingPoints, result.remainingPoints);
+      msBeforeNext = Math.min(msBeforeNext, result.msBeforeNext);
+    }
   } catch {
     return NextResponse.json(
       { error: "Too many requests. Please try again later." },

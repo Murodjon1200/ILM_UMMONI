@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import {
   apiOk,
   badRequest,
+  conflict,
   createRouteHandler,
   readJson,
 } from "@/lib/mobile/api-error";
@@ -24,8 +25,12 @@ const bodySchema = z.object({
 });
 
 /**
- * Registers the device for push notifications. The token column is unique, so
- * upserting re-points a device that switched accounts to the current user.
+ * Registers the device for push notifications. The token column is unique, so a
+ * device that signs out and back in is re-pointed to the current user. A token
+ * that already belongs to a different account is never reassigned: sign-out
+ * removes the previous owner's token first (`DELETE` below), so reaching this
+ * branch means another account's device was targeted and the request is
+ * rejected instead of hijacking its notifications.
  */
 const postHandler = createRouteHandler(async (request) => {
   const user = await requireMobileUser();
@@ -36,11 +41,19 @@ const postHandler = createRouteHandler(async (request) => {
   }
 
   const { token, platform } = parsed.data;
+  const existing = await db.expoPushToken.findUnique({
+    where: { token },
+    select: { userId: true },
+  });
+
+  if (existing && existing.userId !== user.id) {
+    throw conflict("This device is already linked to another account.");
+  }
 
   await db.expoPushToken.upsert({
     where: { token },
     create: { token, userId: user.id, platform: platform ?? null },
-    update: { userId: user.id, platform: platform ?? null },
+    update: { platform: platform ?? null },
   });
 
   return apiOk({ registered: true }, 201);

@@ -31,7 +31,6 @@ The application supports Uzbek, Russian, and English through locale-prefixed rou
 - Zod
 - bcryptjs
 - rate-limiter-flexible
-- Vercel
 
 ## Requirements
 
@@ -49,11 +48,11 @@ cp .env.example .env
 
 | Variable | Required | Description |
 | --- | --- | --- |
-| `DATABASE_URL` | Yes | Pooled PostgreSQL connection used by the application. For Vercel and Supabase, use the transaction/session pooler and keep `connection_limit=1`. |
+| `DATABASE_URL` | Yes | Pooled PostgreSQL connection used by the application. For Supabase, use the transaction/session pooler and keep `connection_limit=1`. |
 | `DIRECT_URL` | Yes | Direct PostgreSQL connection used by Prisma migrations. |
 | `NEXTAUTH_SECRET` | Yes | Random secret used to sign sessions. Generate it with `openssl rand -base64 32`. |
-| `NEXTAUTH_URL` | Yes | Canonical application URL. Use `http://localhost:3000` locally and the production Vercel URL in production. |
-| `AUTH_TRUST_HOST` | Recommended | Allows Auth.js to trust the deployment host. Keep it set to `true` on Vercel. |
+| `NEXTAUTH_URL` | Yes | Canonical application URL. Use `http://localhost:3000` locally and your production URL in production. |
+| `AUTH_TRUST_HOST` | Recommended | Allows Auth.js to trust the deployment host. Set it to `true` when deploying behind a proxy. |
 | `NEXT_PUBLIC_CENTER_PHONE` | Yes | Public contact phone displayed in the footer. |
 | `NEXT_PUBLIC_CENTER_ADDRESS` | Yes | Public center address displayed in the footer. |
 
@@ -163,25 +162,24 @@ src/lib/                     Auth, database, analytics, security, and formatting
 src/middleware.ts            Locale routing, API throttling, and role protection
 ```
 
-## Vercel Deployment
+## Deployment
 
 ### 1. Prepare the repository
 
-Commit the project to GitHub, GitLab, or another provider supported by Vercel. Ensure `.env` and `.env.local` remain ignored.
+Commit the project to your Git host. Ensure `.env` and `.env.local` remain ignored.
 
-### 2. Import the project
+### 2. Build the project
 
-1. Open Vercel and select **Add New → Project**.
-2. Import the repository.
-3. Keep the framework preset as **Next.js**.
-4. Use `npm ci` as the install command and `npm run build` as the build command.
-5. Do not run `prisma db seed` as part of the Vercel build.
+Use `npm ci` to install dependencies and `npm run build` to create the production build. The `postinstall` script runs `prisma generate` automatically. Do not run `prisma db seed` as part of the production build.
 
-The `postinstall` script runs `prisma generate` automatically.
+### 3. Configure the host
 
-### 3. Add environment variables
+This is a standard Next.js server application. Configure your hosting platform to:
 
-In **Project Settings → Environment Variables**, add the variables from `.env.example` to the Production and Preview environments.
+1. Use Node.js 20.9 or newer.
+2. Install with `npm ci` and build with `npm run build`.
+3. Start the server with `npm run start` (`next start` reads the `PORT` environment variable automatically).
+4. Supply the environment variables from `.env.example`.
 
 For production, set:
 
@@ -190,7 +188,7 @@ NEXTAUTH_URL="https://your-production-domain.com"
 NEXTAUTH_SECRET="a-new-long-random-production-secret"
 ```
 
-For Supabase projects in `ap-northeast-2`, select the Tokyo/Seoul Vercel function region when available to reduce database latency.
+Choose a host region close to your database to reduce query latency.
 
 ### 4. Apply database migrations
 
@@ -202,21 +200,21 @@ npx prisma migrate deploy
 
 Do not use `prisma migrate dev` in production.
 
-### 5. Deploy
+### 5. Verify the deployment
 
-Deploy the project. After the first successful deployment, confirm that:
+After the first successful deployment, confirm that:
 
 - `https://your-domain.com/uz` loads
 - `/ru` and `/en` switch languages correctly
 - phone-number login works
 - role-protected dashboards are accessible only to the correct roles
-- Supabase queries and receipt downloads work from the Vercel runtime
+- database queries and receipt downloads work from the production runtime
 
 ## Security Notes
 
 - Never commit `.env` or `.env.local`.
 - Use a unique `NEXTAUTH_SECRET` in every environment.
-- Use the Supabase pooler for `DATABASE_URL` on Vercel.
+- Use the Supabase pooler for `DATABASE_URL` when the host enforces small connection limits.
 - Payment records cannot be deleted; only their status can change.
 - Owner accounts have read-only access to center analytics.
 - Run `npm audit` and update dependencies before each production release.

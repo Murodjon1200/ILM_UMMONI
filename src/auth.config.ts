@@ -1,7 +1,7 @@
 import type { NextAuthConfig } from "next-auth";
 
 const authConfig = {
-  // Trust the platform-provided host header (Vercel sets X-Forwarded-Host).
+  // Trust the proxy-provided host header (e.g. X-Forwarded-Host).
   // Without this, Auth.js throws UntrustedHost unless NEXTAUTH_URL /
   // AUTH_TRUST_HOST is configured, which breaks middleware on every route.
   trustHost: true,
